@@ -1,0 +1,16 @@
+## IDE and editor files.
+.idea/
+.vscode/
+.cache/
+
+## Build files.
+out/
+/stream
+/stream.exe
+
+## Doxygen.
+/html
+/latex
+
+## Valgrind.
+callgrind.out.*
