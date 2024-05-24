@@ -46,6 +46,7 @@ constexpr stream word = "hello"sv;
 constexpr stream words = "hello world foo bar baz"sv;
 constexpr stream whitespace = " \v\f\t\r\n"sv;
 constexpr stream lt_spaces = "  hello world        "sv;
+constexpr stream multiline = "hello\nworld\n\nfoo\nbar\nbaz\n"sv;
 
 static_assert(empty.back() == std::nullopt);
 static_assert(one.back() == 'a');
@@ -93,10 +94,18 @@ static_assert(stream{word}.drop_until_or_empty("xqz") == "hello");
 static_assert(stream{word}.drop_until_any_or_empty("xqlz") == "llo");
 static_assert(stream{word}.drop_until_any_or_empty("x") == "hello");
 
-
-
-
-
+Test(
+    auto lines = stream{multiline}.lines();
+    auto it = lines.begin();
+    Check(*it++ == "hello");
+    Check(*it++ == "world");
+    Check(*it++ == "");
+    Check(*it++ == "foo");
+    Check(*it++ == "bar");
+    Check(*it++ == "baz");
+    Check(*it++ == "");
+    Check(it == lines.end());
+);
 
 
 

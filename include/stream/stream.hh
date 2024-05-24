@@ -3,7 +3,6 @@
 
 #include <cstddef>
 #include <format>
-#include <generator>
 #include <optional>
 #include <ranges>
 #include <source_location>
@@ -317,15 +316,12 @@ public:
     ///
     /// Returns a range that yields each line in the stream; the line
     /// separators are not included. The stream is not modified.
-    [[nodiscard]] auto
+    [[nodiscard]] constexpr auto
     lines(text_type line_separator = _s_default_line_separator())
-    const noexcept -> std::generator<basic_stream> {
-        auto copy = auto{*this};
-        while (not copy.empty()) {
-            auto line = copy.take_until(line_separator);
-            copy.drop();
-            co_yield basic_stream{line};
-        }
+    const noexcept {
+        return _m_text
+            | std::views::split(line_separator)
+            | std::views::transform([](auto r) { return text_type(r); });
     }
 
     /// \return The size (= number of characters) of this stream.
