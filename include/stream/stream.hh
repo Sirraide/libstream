@@ -321,7 +321,7 @@ public:
     const noexcept {
         return _m_text
             | std::views::split(line_separator)
-            | std::views::transform([](auto r) { return text_type(r); });
+            | std::views::transform([](auto r) { return basic_stream(text_type(r)); });
     }
 
     /// \return The size (= number of characters) of this stream.
